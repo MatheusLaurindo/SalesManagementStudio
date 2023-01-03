@@ -23,17 +23,26 @@
         <a id="addBtn" asp-controller="Produto" asp-action="Adicionar" class="btn btn-primary mt-4 mb-4">Adicionar produto</a>
     </div>
     <div class="row">
-        @foreach (var item in Model)
+        @if (@Model.Count() > 0)
         {
-            <div id="ProdutoCard" class="card m-3" style="width: 14rem;">
-                <div style="height: 40%">
-                    <img class="card-img-top p-1" src="@item.ImagemUrl" alt="Card image cap" style="width: 100%">
+            @foreach (var item in Model)
+            {
+                <div id="ProdutoCard" class="card m-3" style="width: 14rem;">
+                    <div>
+                        <img class="card-img-top p-1 img-fluid" src="@item.ImagemUrl" alt="Card image ca">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title mt-2"><a id="linkDetalhe" asp-controller="Produto" asp-action="Detalhes" asp-route-id="@item.IdProduto">@item.Nome</a></h5>
+                        <h6 class="card-title">@item.Preco</h6>
+                        <p class="card-text" style="font-size: 0.8em">@item.Descrição</p>
+                    </div>
                 </div>
-                <div class="card-body" style="height: 60%">
-                    <h5 class="card-title mt-3"><a id="linkDetalhe" asp-controller="Produto" asp-action="Detalhes" asp-route-id="@item.IdProduto">@item.Nome</a></h5>
-                    <h6 class="card-title">@item.Preco</h6>
-                    <p class="card-text" style="font-size: 0.8em">@item.Descrição</p>
-                </div>
+            }
+        } 
+        else
+        {
+            <div class="container d-flex justify-content-center mt-5" style="border-bottom: 1px solid #2C3E50">
+                <p>Nenhum produto cadastrado.</p>
             </div>
         }
     </div>

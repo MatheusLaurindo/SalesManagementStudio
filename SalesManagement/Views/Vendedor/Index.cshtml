@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<Vendedor>
 
-@{
-    ViewBag.Title = "Index";
-}
-
 <style>
     #editIcon:hover {
         transform: scale(1.3);
@@ -26,25 +22,35 @@
         <h2 class="mt-3">Vendedores</h2>
         <a id="addBtn" asp-controller="Vendedor" asp-action="Adicionar" class="btn btn-primary mt-4 mb-4">Adicionar vendedor</a>
     </div>
-    <table class="table table-striped mt-2">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Nome)</th>
-            <th>@Html.DisplayNameFor(model => model.Documento)</th>
-            <th>@Html.DisplayNameFor(model => model.DataNascimento)</th>
-            <th>@Html.DisplayNameFor(model => model.Salario)</th>
-            <th></th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                <td>@Html.DisplayFor(modelItem => item.Documento)</td>
-                <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
-                <td>@Html.DisplayFor(modelItem => item.Salario)</td>
-                <td><a id="editIcon" asp-controller="Vendedor" asp-action="Editar" asp-route-id="@item.IdVendedor"><i id="editIcon" class="fa-solid fa-pen-to-square"></i></a></td>
-                <td><a id="deleteIcon" asp-controller="Vendedor" asp-action="Deletar" asp-route-id="@item.IdVendedor"><i id="deleteIcon" class="fa-solid fa-trash"></a></td>
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped mt-2">
+            <tr class="bg-primary">
+                <th class="text-light">@Html.DisplayNameFor(model => model.Nome)</th>
+                <th class="text-light">@Html.DisplayNameFor(model => model.Documento)</th>
+                <th class="text-light">@Html.DisplayNameFor(model => model.DataNascimento)</th>
+                <th class="text-light">@Html.DisplayNameFor(model => model.Salario)</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr id="linhaTbl">
+                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Documento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DataNascimento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Salario)</td>
+                    <td><a id="editIcon" asp-controller="Vendedor" asp-action="Editar" asp-route-id="@item.IdVendedor"><i id="editIcon" class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a id="deleteIcon" asp-controller="Vendedor" asp-action="Deletar" asp-route-id="@item.IdVendedor"><i id="deleteIcon" class="fa-solid fa-trash"></a></td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="container d-flex justify-content-center mt-5" style="border-bottom: 1px solid #2C3E50">
+            <p>Nenhum vendedor cadastrado.</p>
+        </div>
+    }
 </div>
