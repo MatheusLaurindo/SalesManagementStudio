@@ -1,7 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Produto>
 
-<div class="text-center">
-    <h1 class="display-4">Produtos</h1>
+<style>
+    #ProdutoCard:hover {
+        transform: scale(1.1);
+        transition: 0.2s ease-in-out;
+        border: 1px solid #2C3E50;
+    }
+
+    #addBtn:hover {
+        transform: scale(1.1);
+        transition: 0.2s ease-in-out
+    }
+
+    #linkDetalhe {
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+    <div class="d-flex justify-content-between mt-3">
+        <h2 class="mt-3">Produtos</h2>
+        <a id="addBtn" asp-controller="Produto" asp-action="Adicionar" class="btn btn-primary mt-4 mb-4">Adicionar produto</a>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div id="ProdutoCard" class="card m-3" style="width: 14rem;">
+                <div style="height: 40%">
+                    <img class="card-img-top p-1" src="@item.ImagemUrl" alt="Card image cap" style="width: 100%">
+                </div>
+                <div class="card-body" style="height: 60%">
+                    <h5 class="card-title mt-3"><a id="linkDetalhe" asp-controller="Produto" asp-action="Detalhes" asp-route-id="@item.IdProduto">@item.Nome</a></h5>
+                    <h6 class="card-title">@item.Preco</h6>
+                    <p class="card-text" style="font-size: 0.8em">@item.Descrição</p>
+                </div>
+            </div>
+        }
+    </div>
 </div>
