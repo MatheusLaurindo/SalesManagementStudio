@@ -16,7 +16,7 @@ a.navbar-brand {
     min-width: 20%;
     background-color: #2C3E50;
     position: absolute;
-    height: 100vh;
+    height: 100%;
 }
 
 .nav {

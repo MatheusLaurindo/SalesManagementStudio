@@ -1,0 +1,27 @@
+﻿@model Produto
+
+<div class="container">
+    <div class="d-flex justify-content-between mt-3">
+        <h2 class="mt-3">Adicionar Produto</h2>
+    </div>
+    <form asp-controller="Produto" asp-action="Editar" method="post">
+        <div class="mb-3 col-md-6">
+            <label class="form-label">Nome</label>
+            <input asp-for="Nome" type="text" class="form-control">
+        </div>
+        <div class="mb-3 col-md-6">
+            <label class="form-label">Preço</label>
+            <input asp-for="Preco" type="text" class="form-control">
+        </div>
+        <div class="mb-3 col-md-6">
+            <label class="form-label">Descrição</label>
+            <input asp-for="Descrição" type="text" class="form-control">
+        </div>
+        <div class="mb-3 col-md-6">
+            <label class="form-label">Adicionar Url da imagem</label>
+            <input asp-for="ImagemUrl" type="text" class="form-control">
+        </div>
+        <input type="hidden" asp-for="@Model.IdProduto" value="@Model.IdProduto" />
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+</div>
