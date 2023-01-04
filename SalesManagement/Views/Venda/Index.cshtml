@@ -1,7 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Vendas";
-}
+﻿@model IEnumerable<VendaProduto>
 
-<div class="text-center">
-    <h1 class="display-4">Registrar uma Venda</h1>
+<style>
+    #editIcon:hover {
+        transform: scale(1.3);
+        transition: 0.2s ease-in-out;
+    }
+
+    #deleteIcon:hover {
+        transform: scale(1.3);
+        transition: 0.2s ease-in-out;
+    }
+
+    #addBtn:hover {
+        transform: scale(1.1);
+        transition: 0.2s ease-in-out;
+    }
+</style>
+
+<div class="container">
+    <div class="d-flex justify-content-between mt-3">
+        <h2 class="mt-3">Registrar nova venda</h2>
+        <a id="addBtn" asp-controller="Venda" asp-action="Adicionar" class="btn btn-primary mt-4 mb-4">Registrar venda</a>
+    </div>
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped mt-2">
+            <tr class="bg-primary">
+                <th class="text-light">@Html.DisplayNameFor(model => model.Produto.Nome)</th>
+                <th class="text-light">@Html.DisplayNameFor(model => model.Quantidade)</th>
+                <th class="text-light">@Html.DisplayNameFor(model => model.Venda.Vendedor.Nome)</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr id="linhaTbl">
+                    <td>@Html.DisplayFor(modelItem => item.Produto.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Quantidade)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Venda.Vendedor.Nome)</td>
+                    <td><a id="editIcon" asp-controller="Vendedor" asp-action="Editar" asp-route-id="@item.VendaId"><i id="editIcon" class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a id="deleteIcon" asp-controller="Vendedor" asp-action="Deletar" asp-route-id="@item.VendaId"><i id="deleteIcon" class="fa-solid fa-trash"></a></td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="container d-flex justify-content-center mt-5" style="border-bottom: 1px solid #2C3E50">
+            <p>Nenhum venda realizada até o momento.</p>
+        </div>
+    }
 </div>
