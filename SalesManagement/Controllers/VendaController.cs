@@ -24,9 +24,9 @@ namespace SalesManagement.Controllers
         public IActionResult Adicionar()
         {
             ViewBag.Vendedores = new SelectList(_context.Vendedores.ToList(), "IdVendedor", "Nome");
-            ViewBag.Produtos = new SelectList(_context.Produtos.ToList(), "IdProduto", "Nome");
+            var listaVendaProduto = _context.VendaProduto.ToList();
 
-            return View();
+            return View(listaVendaProduto);
         }
 
         [HttpPost]
@@ -44,5 +44,13 @@ namespace SalesManagement.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public IActionResult AdicionarVendaProduto()
+        {
+            ViewBag.Produtos = new SelectList(_context.Produtos.ToList(), "IdProduto", "Nome");
+
+            return View();
+        }
+
     }
 }
