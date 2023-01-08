@@ -68,12 +68,41 @@ namespace SalesManagement.Controllers
 
         public IActionResult RelatorioVendas()
         {
+            ViewBag.Vendedores = new SelectList(_context.Vendedores.ToList(), "IdVendedor", "Nome");
+
+            return View(new List<Venda>());
+        }
+
+        [HttpPost]
+        public ActionResult RelatorioVendas(long vendedorId)
+        {
+            ViewBag.Vendedores = new SelectList(_context.Vendedores.ToList(), "IdVendedor", "Nome");
+
             var relatorio = _context.Vendas
                 .Include(x => x.Produto)
-                .Include(x => x.Vendedor)
+                .Where(x => x.VendedorId == vendedorId)
                 .ToList();
 
-            return View(relatorio);
+            return View("RelatorioVendas", relatorio);
+        }
+
+        public IActionResult RelatorioComissoes()
+        {
+            ViewBag.Vendedores = new SelectList(_context.Vendedores.ToList(), "IdVendedor", "Nome");
+
+            return View(new List<Venda>());
+        }
+
+        [HttpPost]
+        public ActionResult RelatorioComissoes(long vendedorId)
+        {
+            ViewBag.Vendedores = new SelectList(_context.Vendedores.ToList(), "IdVendedor", "Nome");
+
+            var relatorio = _context.Vendas
+                .Where(x => x.VendedorId == vendedorId)
+                .ToList();
+
+            return View("RelatorioComissoes", relatorio);
         }
 
     }
