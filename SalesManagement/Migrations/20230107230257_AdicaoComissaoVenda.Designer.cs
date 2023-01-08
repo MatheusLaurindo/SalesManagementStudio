@@ -12,8 +12,8 @@ using SalesManagement.Context;
 namespace SalesManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230102193412_DomainChanges")]
-    partial class DomainChanges
+    [Migration("20230107230257_AdicaoComissaoVenda")]
+    partial class AdicaoComissaoVenda
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,109 +28,85 @@ namespace SalesManagement.Migrations
                 {
                     b.Property<long>("IdProduto")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("IdProduto");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdProduto"), 1L, 1);
 
                     b.Property<string>("Descrição")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Descrição");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagemUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Preco");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdProduto");
 
-                    b.ToTable("Produtos", (string)null);
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("SalesManagement.Models.Venda", b =>
                 {
                     b.Property<long>("IdVenda")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("IdVenda");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdVenda"), 1L, 1);
+
+                    b.Property<decimal>("Comissao")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("VendedorId")
                         .HasColumnType("bigint");
 
                     b.HasKey("IdVenda");
 
-                    b.HasIndex("VendedorId");
-
-                    b.ToTable("Vendas", (string)null);
-                });
-
-            modelBuilder.Entity("SalesManagement.Models.VendaProduto", b =>
-                {
-                    b.Property<long>("VendaId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("VendaId");
-
-                    b.Property<long>("ProdutoId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("ProdutoId");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int")
-                        .HasColumnName("Quantidade");
-
-                    b.HasKey("VendaId", "ProdutoId");
-
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("VendaProduto", (string)null);
+                    b.HasIndex("VendedorId");
+
+                    b.ToTable("Vendas");
                 });
 
             modelBuilder.Entity("SalesManagement.Models.Vendedor", b =>
                 {
                     b.Property<long>("IdVendedor")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("IdVendedor");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdVendedor"), 1L, 1);
 
                     b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DataNascimento");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Documento")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Documento");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Salario")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdVendedor");
 
-                    b.ToTable("Vendedores", (string)null);
+                    b.ToTable("Vendedores");
                 });
 
             modelBuilder.Entity("SalesManagement.Models.Venda", b =>
-                {
-                    b.HasOne("SalesManagement.Models.Vendedor", "Vendedor")
-                        .WithMany("Vendas")
-                        .HasForeignKey("VendedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vendedor");
-                });
-
-            modelBuilder.Entity("SalesManagement.Models.VendaProduto", b =>
                 {
                     b.HasOne("SalesManagement.Models.Produto", "Produto")
                         .WithMany()
@@ -138,15 +114,15 @@ namespace SalesManagement.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SalesManagement.Models.Venda", "Venda")
-                        .WithMany()
-                        .HasForeignKey("VendaId")
+                    b.HasOne("SalesManagement.Models.Vendedor", "Vendedor")
+                        .WithMany("Vendas")
+                        .HasForeignKey("VendedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Produto");
 
-                    b.Navigation("Venda");
+                    b.Navigation("Vendedor");
                 });
 
             modelBuilder.Entity("SalesManagement.Models.Vendedor", b =>

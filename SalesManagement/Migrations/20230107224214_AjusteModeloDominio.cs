@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SalesManagement.Migrations
 {
-    public partial class Initial : Migration
+    public partial class AjusteModeloDominio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,8 @@ namespace SalesManagement.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descrição = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Preco = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Preco = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ImagemUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,8 +34,7 @@ namespace SalesManagement.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Documento = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Comissao = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Salario = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,11 +47,20 @@ namespace SalesManagement.Migrations
                 {
                     IdVenda = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    VendedorId = table.Column<long>(type: "bigint", nullable: false)
+                    VendedorId = table.Column<long>(type: "bigint", nullable: false),
+                    ProdutoId = table.Column<long>(type: "bigint", nullable: false),
+                    Quantidade = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vendas", x => x.IdVenda);
+                    table.ForeignKey(
+                        name: "FK_Vendas_Produtos_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produtos",
+                        principalColumn: "IdProduto",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Vendas_Vendedores_VendedorId",
                         column: x => x.VendedorId,
@@ -60,34 +69,9 @@ namespace SalesManagement.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "VendaProduto",
-                columns: table => new
-                {
-                    VendaId = table.Column<long>(type: "bigint", nullable: false),
-                    ProdutoId = table.Column<long>(type: "bigint", nullable: false),
-                    Quantidade = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VendaProduto", x => new { x.VendaId, x.ProdutoId });
-                    table.ForeignKey(
-                        name: "FK_VendaProduto_Produtos_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produtos",
-                        principalColumn: "IdProduto",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_VendaProduto_Vendas_VendaId",
-                        column: x => x.VendaId,
-                        principalTable: "Vendas",
-                        principalColumn: "IdVenda",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_VendaProduto_ProdutoId",
-                table: "VendaProduto",
+                name: "IX_Vendas_ProdutoId",
+                table: "Vendas",
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
@@ -99,13 +83,10 @@ namespace SalesManagement.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "VendaProduto");
+                name: "Vendas");
 
             migrationBuilder.DropTable(
                 name: "Produtos");
-
-            migrationBuilder.DropTable(
-                name: "Vendas");
 
             migrationBuilder.DropTable(
                 name: "Vendedores");

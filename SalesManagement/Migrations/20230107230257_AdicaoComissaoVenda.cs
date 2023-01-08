@@ -4,23 +4,23 @@
 
 namespace SalesManagement.Migrations
 {
-    public partial class DomainChanges : Migration
+    public partial class AdicaoComissaoVenda : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<decimal>(
                 name: "Comissao",
-                table: "Vendedores");
+                table: "Vendas",
+                type: "decimal(18,2)",
+                nullable: false,
+                defaultValue: 0m);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<decimal>(
+            migrationBuilder.DropColumn(
                 name: "Comissao",
-                table: "Vendedores",
-                type: "decimal(18,2)",
-                nullable: false,
-                defaultValue: 0m);
+                table: "Vendas");
         }
     }
 }
