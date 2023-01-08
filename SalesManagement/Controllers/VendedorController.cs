@@ -92,5 +92,6 @@ namespace SalesManagement.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

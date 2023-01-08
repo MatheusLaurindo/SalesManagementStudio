@@ -17,7 +17,6 @@ namespace SalesManagement.Context
         public DbSet<Vendedor> Vendedores { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Venda> Vendas { get; set; }
-        public DbSet<VendaProduto> VendaProduto { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
